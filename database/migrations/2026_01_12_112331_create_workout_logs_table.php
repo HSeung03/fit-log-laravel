@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('workout_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('record_date');       // 운동한 날짜
+            $table->text('diet_content')->nullable(); // 식단 기록
+            $table->json('workout_results')->nullable(); // 수행 결과
+            $table->float('current_weight')->nullable(); // 당일 몸무게
             $table->timestamps();
         });
     }

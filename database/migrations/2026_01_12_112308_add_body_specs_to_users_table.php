@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        $table->float('height')->nullable()->after('password');         // 키
+        $table->float('initial_weight')->nullable()->after('height');   // 초기 체중
+        $table->float('initial_muscle')->nullable()->after('initial_weight'); // 초기 근육량
+        $table->float('initial_fat')->nullable()->after('initial_muscle');    // 초기 체지방
+    });
     }
 
     /**
