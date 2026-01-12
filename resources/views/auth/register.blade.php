@@ -17,32 +17,32 @@
         </div>
 
         <div class="mt-4">
-    <label>키 (cm)</label>
-    <input type="number" name="height" step="0.1" class="block mt-1 w-full" required />
-</div>
+            <label>키 (cm)</label>
+            <input type="number" name="height" step="0.1" class="block mt-1 w-full" required />
+        </div>
 
-<div class="mt-4">
-    <label>초기 체중 (kg)</label>
-    <input type="number" name="initial_weight" step="0.1" class="block mt-1 w-full" required />
-</div>
+        <div class="mt-4">
+            <label>초기 체중 (kg)</label>
+            <input type="number" name="initial_weight" step="0.1" class="block mt-1 w-full" required />
+        </div>
 
-<div class="mt-4">
-    <label>골격근량 (kg)</label>
-    <input type="number" name="initial_muscle" step="0.1" class="block mt-1 w-full" />
-</div>
+        <div class="mt-4">
+            <label>골격근량 (kg)</label>
+            <input type="number" name="initial_muscle" step="0.1" class="block mt-1 w-full" />
+        </div>
 
-<div class="mt-4">
-    <label>체지방률 (%)</label>
-    <input type="number" name="initial_fat" step="0.1" class="block mt-1 w-full" />
-</div>
+        <div class="mt-4">
+            <label>체지방률 (%)</label>
+            <input type="number" name="initial_fat" step="0.1" class="block mt-1 w-full" />
+        </div>
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                type="password"
+                name="password"
+                required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -52,8 +52,8 @@
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                type="password"
+                name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
