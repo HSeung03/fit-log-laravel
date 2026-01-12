@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WorkoutTemplateController;
+use App\Http\Controllers\WorkoutLogController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,3 +32,15 @@ Route::get('/', function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/templates', [WorkoutTemplateController::class, 'index'])->name('templates.index');
+    Route::post('/templates', [WorkoutTemplateController::class, 'store'])->name('templates.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    // ... 기존 템플릿 라우트들 ...
+    Route::get('/logs/create', [WorkoutLogController::class, 'create'])->name('logs.create');
+    Route::post('/logs', [WorkoutLogController::class, 'store'])->name('logs.store');
+});
