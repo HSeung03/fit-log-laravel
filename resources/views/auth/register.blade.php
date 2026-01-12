@@ -15,6 +15,28 @@
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+        
+        <div class ="mt-4">
+            <label>키 (cm)</lavel>
+            <input tyep="number" name="height" step="0.1" class ="block mt-1 w-full" required />
+        </div>
+        
+        <div class ="mt-4">
+            <label>초기 체중 (kg)</lavel>
+            <input tyep="number" name="initial_weight" step="0.1" class ="block mt-1 w-full" required />
+        </div>
+
+        
+        <div class ="mt-4">
+            <label>골격근량 (kg)</lavel>
+            <input tyep="number" name="initial_muscle" step="0.1" class ="block mt-1 w-full" />
+        </div>
+
+        
+        <div class ="mt-4">
+            <label>체지방률 (%)</lavel>
+            <input tyep="number" name="initial_fat" step="0.1" class ="block mt-1 w-full" />
+        </div>
 
         <!-- Password -->
         <div class="mt-4">
