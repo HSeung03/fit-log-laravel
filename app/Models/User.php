@@ -18,10 +18,19 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+    'name', 'email', 'password', 
+    'height', 'initial_weight', 'initial_muscle', 'initial_fat',
     ];
+
+    // 유저가 가진 루틴들
+    public function templates() {
+        return $this->hasMany(WorkoutTemplate::class);
+    }
+
+    // 유저가 쓴 일지들
+    public function logs() {
+        return $this->hasMany(WorkoutLog::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
