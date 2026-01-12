@@ -4,13 +4,19 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkoutTemplateController;
 use App\Http\Controllers\WorkoutLogController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    /** @var \App\Models\User $user */
+    $user = Auth::user(); // auth()->user() 대신 이걸 써보세요.
+
+    return view('dashboard', [
+        'templates' => $user->templates
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
