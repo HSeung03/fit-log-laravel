@@ -7,24 +7,6 @@ use App\Http\Controllers\WorkoutLogController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    /** @var \App\Models\User $user */
-    $user = Auth::user(); // auth()->user() 대신 이걸 써보세요.
-
-    return view('dashboard', [
-        'templates' => $user->templates
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-Route::get('/', function () {
     // 1. 가짜 메시지 데이터 생성 (이게 없으면 image_b58f01.png 에러 발생)
     $chatMessages = [
         "안녕하세요! 무엇을 도와드릴까요?",
@@ -36,6 +18,22 @@ Route::get('/', function () {
     // 2. 데이터를 'chatMessages'라는 이름으로 뷰에 전달
     return view('welcome', ['chatMessages' => $chatMessages]);
 });
+
+Route::get('/dashboard', function () {
+    /** @var \App\Models\User $user */
+    $user = Auth::user(); // 
+
+    return view('dashboard', [
+        'templates' => $user->templates
+    ]);
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 
 require __DIR__.'/auth.php';
 
