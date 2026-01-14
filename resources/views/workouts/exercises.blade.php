@@ -1,25 +1,55 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('exercises.store') }}" method="POST" class="mb-6">
+            <form action="{{ route('exercises.store') }}" method="POST" class="mb-8 p-6 bg-white shadow sm:rounded-lg flex gap-4 items-end">
                 @csrf
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">카테고리</label>
+                    <select name="category" class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="상체">상체</option>
+                        <option value="하체">하체</option>
+                        <option value="유산소">유산소</option>
+                    </select>
+                </div>
                 
-                <select name="category">
-                    <option value="상체">상체</option>
-                    <option value="하체">하체</option>
-                    <option value="유산소">유산소</option>
-                </select>
-                <input type="text" name="name" placeholder="운동 이름 (예: 벤치프레스)" required>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">추가하기</button>
+                <div class="flex-[2]">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">운동 이름</label>
+                    <input type="text" name="name" placeholder="예: 벤치프레스" required
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                </div>
+
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-bold transition">
+                    추가하기
+                </button>
             </form>
 
-            <ul class="bg-white shadow sm:rounded-md">
-                @foreach($exercises as $exercise)
-                    <li class="px-4 py-4 border-b border-gray-200">
-                        [{{ $exercise->category }}] {{ $exercise->name }}
-                    </li>
-                @endforeach
-            </ul>
+            <div class="bg-white shadow overflow-hidden sm:rounded-md">
+                <ul class="divide-y divide-gray-200">
+                    @forelse($exercises as $exercise)
+                        <li class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition">
+                            <div class="flex items-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-3">
+                                    {{ $exercise->category }}
+                                </span>
+                                <span class="text-lg font-semibold text-gray-900">{{ $exercise->name }}</span>
+                            </div>
+
+                            <form action="{{ route('exercises.destroy', $exercise->id) }}" method="POST" 
+                                  onsubmit="return confirm('이 운동 종목을 삭제하시겠습니까?\n(해당 종목이 포함된 과거 기록이 모두 삭제될 수 있습니다.)');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-white hover:bg-red-500 border border-red-500 px-3 py-1 rounded text-sm transition">
+                                    삭제
+                                </button>
+                            </form>
+                        </li>
+                    @empty
+                        <li class="px-6 py-10 text-center text-gray-500">
+                            등록된 운동이 없습니다. 새로운 운동을 추가해 보세요!
+                        </li>
+                    @endforelse
+                </ul>
+            </div>
         </div>
     </div>
 </x-app-layout>

@@ -27,6 +27,7 @@
                     locale: 'ko',
                     height: 650,
                     selectable: true,
+                    headerToolbar: false,
                     dateClick: function(info) {
                         openModal(info.dateStr);
                     },
