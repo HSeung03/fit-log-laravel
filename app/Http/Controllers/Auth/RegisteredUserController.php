@@ -51,8 +51,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        //Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect('/')->with('status', '회원가입이 완료되었습니다. 로그을 진행해주세요.');
     }
 }
