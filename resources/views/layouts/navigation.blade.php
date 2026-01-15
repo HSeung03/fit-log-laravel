@@ -4,8 +4,8 @@
             <div class="flex">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ url('/') }}" class="flex items-center">
-    <span class="text-2xl font-black text-blue-600 tracking-tighter">FitLog</span>
-</a>
+                        <span class="text-2xl font-black text-blue-600 tracking-tighter">FitLog</span>
+                    </a>
                 </div>
 
                 @auth
@@ -13,6 +13,11 @@
                     <x-nav-link :href="url('/')" :active="request()->is('/')">
                         {{ __('달력') }}
                     </x-nav-link>
+                    
+                    <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.index') || request()->routeIs('logs.show')">
+                        {{ __('운동기록 확인') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('exercises.index')" :active="request()->routeIs('exercises.index')">
                         {{ __('운동 관리') }}
                     </x-nav-link>
