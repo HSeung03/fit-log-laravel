@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('exercises.store') }}" method="POST" class="mb-8 p-6 bg-white shadow sm:rounded-lg flex gap-4 items-end">
+            <form action="{{ route('exercises.store') }}" method="POST" autocomplete="off" class="mb-8 p-6 bg-white shadow sm:rounded-lg flex gap-4 items-end">
                 @csrf
                 <div class="flex-1">
                     <label class="block text-sm font-medium text-gray-700 mb-1">카테고리</label>
