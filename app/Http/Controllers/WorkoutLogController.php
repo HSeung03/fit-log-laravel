@@ -11,7 +11,7 @@ class WorkoutLogController extends Controller
 {
     public function index() {
         if (!Auth::check()) {
-            return view('welcome', ['chatMessages' => ["반갑습니다! 오늘부터 기록을 시작해보세요."]]);
+            return view('welcome');
         }
 
         /** @var User $user */

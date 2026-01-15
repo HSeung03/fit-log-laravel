@@ -1,71 +1,41 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
-        @csrf
+    @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+    <div>
+        <x-input-label for="name" :value="__('Name')" />
+        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+    <div class="mt-4">
+        <x-input-label for="email" :value="__('Email')" />
+        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
 
-        <div class="mt-4">
-            <label>키 (cm)</label>
-            <input type="number" name="height" step="0.1" class="block mt-1 w-full" required />
-        </div>
+    {{-- 이 부분에 있던 키, 몸무게, 골격근량, 체지방률 <div class="mt-4">들을 모두 삭제하세요 --}}
 
-        <div class="mt-4">
-            <label>초기 체중 (kg)</label>
-            <input type="number" name="initial_weight" step="0.1" class="block mt-1 w-full" required />
-        </div>
+    <div class="mt-4">
+        <x-input-label for="password" :value="__('Password')" />
+        <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
 
-        <div class="mt-4">
-            <label>골격근량 (kg)</label>
-            <input type="number" name="initial_muscle" step="0.1" class="block mt-1 w-full" />
-        </div>
+    <div class="mt-4">
+        <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+    </div>
 
-        <div class="mt-4">
-            <label>체지방률 (%)</label>
-            <input type="number" name="initial_fat" step="0.1" class="block mt-1 w-full" />
-        </div>
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="flex items-center justify-end mt-4">
+        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            {{ __('이미 회원이신가요?') }}
+        </a>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                type="password"
-                name="password"
-                required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                type="password"
-                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+        <x-primary-button class="ms-4">
+            {{ __('회원가입') }}
+        </x-primary-button>
+    </div>
+</form>
 </x-guest-layout>
