@@ -2,9 +2,43 @@
     @auth
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('운동 기록') }}
+                {{ __('FitLog - 운동 달력') }}
             </h2>
         </x-slot>
+
+        <style>
+            /* 1. FullCalendar 기본 "오늘" 배경색(노란색/하늘색) 제거 */
+            .fc .fc-day-today {
+                background-color: transparent !important;
+            }
+
+            /* 2. 오늘 날짜 숫자만 강조 (Deep Blue + Bold) */
+            .fc .fc-day-today .fc-daygrid-day-number {
+                color: #1d4ed8 !important; /* Tailwind blue-700 */
+                font-weight: 800 !important;
+                background-color: #eff6ff; /* 숫자 뒤에만 살짝 동그란 배경 */
+                border-radius: 50%;
+                padding: 2px 6px;
+            }
+
+            /* 3. 운동 기록이 있는 날의 배경 이벤트 스타일 (Tailwind blue-100) */
+            .fc-bg-event {
+                background-color: #dbeafe !important; /* #dbeafe (blue-100) */
+                opacity: 0.85 !important;
+                border: none !important;
+            }
+
+            /* 4. 달력 전체 폰트 및 가독성 */
+            .fc {
+                font-family: 'Pretendard', sans-serif;
+            }
+            .fc-daygrid-day {
+                cursor: pointer;
+            }
+            .fc-daygrid-day:hover {
+                background-color: #f9fafb;
+            }
+        </style>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -33,16 +67,7 @@
                     
                     try {
                         userExercises = JSON.parse(dataStore.dataset.exercises || '{}');
-                        const rawLogs = JSON.parse(dataStore.dataset.logs || '[]');
-                        
-                        // ★ 중복 방지: 동일 날짜의 기록이 여러 개일 경우 마지막 기록 하나만 사용
-                        const uniqueMap = {};
-                        rawLogs.forEach(log => {
-                            // FullCalendar는 'start' 속성을 날짜 기준으로 인식함
-                            uniqueMap[log.start] = log;
-                        });
-                        savedLogs = Object.values(uniqueMap);
-                        
+                        savedLogs = JSON.parse(dataStore.dataset.logs || '[]');
                     } catch (e) {
                         console.error("데이터 로드 실패:", e);
                     }
@@ -58,14 +83,14 @@
                             right: 'prev,next' 
                         },
                         
-                        // 시간 표시(오전 9시 등) 숨기기
+                        // 시간 표시 제거
                         displayEventTime: false,
                         
-                        // 정제된 로그 데이터 연결
+                        // 서버에서 넘어온 background 이벤트 적용
                         events: savedLogs, 
                         
                         dateClick: function(info) {
-                            // 클릭한 날짜에 기록이 있는지 확인
+                            // 클릭한 날짜에 기록이 있는지 확인 (logs 배열에서 start 날짜 비교)
                             const existingLog = savedLogs.find(l => l.start === info.dateStr);
                             if (existingLog) {
                                 showDetailModal(existingLog, info.dateStr);
@@ -77,29 +102,27 @@
                     calendar.render();
                 });
 
-                // 상세보기 모달 (저장된 기록 보여주기)
+                // 상세보기 모달
                 function showDetailModal(log, dateStr) {
                     const modal = document.getElementById('workoutModal');
                     modal.classList.remove('hidden');
                     
                     document.getElementById('modalDateTitle').innerText = dateStr + " 운동 요약";
                     
-                    // 입력 관련 섹션 숨기기
                     document.getElementById('weight-input-section').classList.add('hidden');
                     document.getElementById('category-select-section').classList.add('hidden');
                     document.getElementById('diet-input-section').classList.add('hidden');
                     document.getElementById('submit-button').classList.add('hidden');
 
-                    // 결과 데이터 렌더링
                     const resultsHtml = log.extendedProps.results.map(ex => `
                         <div class="p-2 bg-gray-50 border rounded text-sm mb-1 flex justify-between">
                             <span><strong>${ex.name}</strong></span>
-                            <span class="text-sky-600 font-mono">${ex.weight}kg x ${ex.reps}회</span>
+                            <span class="text-blue-600 font-mono">${ex.weight}kg x ${ex.reps}회</span>
                         </div>
                     `).join('');
 
                     document.getElementById('exercise-fields').innerHTML = `
-                        <div class="bg-sky-50 p-3 rounded mb-4 text-sm border border-sky-100">
+                        <div class="bg-blue-50 p-3 rounded mb-4 text-sm border border-blue-100">
                             <p class="mb-1"><strong>⚖️ 체중:</strong> ${log.extendedProps.weight}kg</p>
                             <p><strong>📝 메모:</strong> ${log.extendedProps.diet || '내용 없음'}</p>
                         </div>
@@ -108,7 +131,7 @@
                     `;
                 }
 
-                // 입력 모달 (새 기록 작성하기)
+                // 입력 모달
                 function openModal(dateStr) {
                     const modal = document.getElementById('workoutModal');
                     modal.classList.remove('hidden');
@@ -117,7 +140,6 @@
                     document.getElementById('selectedDate').value = dateStr;
                     document.getElementById('exercise-fields').innerHTML = '';
                     
-                    // 입력 섹션 다시 보이기
                     document.getElementById('weight-input-section').classList.remove('hidden');
                     document.getElementById('category-select-section').classList.remove('hidden');
                     document.getElementById('diet-input-section').classList.remove('hidden');
@@ -128,7 +150,6 @@
                     document.getElementById('workoutModal').classList.add('hidden');
                 }
 
-                // 카테고리 선택 시 운동 항목 추가
                 function addCategoryExercises(category) {
                     const container = document.getElementById('exercise-fields');
                     container.innerHTML = '';
@@ -141,13 +162,13 @@
 
                     exercises.forEach((ex, index) => {
                         const html = `
-                            <div class="p-3 bg-sky-50 rounded border border-sky-100 mb-2 relative group">
+                            <div class="p-3 bg-blue-50 rounded border border-blue-100 mb-2 relative group">
                                 <button type="button" onclick="this.parentElement.remove()" class="absolute top-1 right-2 text-gray-400 hover:text-red-500">×</button>
-                                <p class="font-bold text-sm text-sky-700 mb-2">${ex.name}</p>
+                                <p class="font-bold text-sm text-blue-700 mb-2">${ex.name}</p>
                                 <input type="hidden" name="workout_results[${index}][name]" value="${ex.name}">
                                 <div class="flex gap-2">
-                                    <input type="number" name="workout_results[${index}][weight]" step="0.1" class="w-1/2 p-1 border rounded text-sm focus:ring-sky-500" placeholder="kg">
-                                    <input type="number" name="workout_results[${index}][reps]" class="w-1/2 p-1 border rounded text-sm focus:ring-sky-500" placeholder="회">
+                                    <input type="number" name="workout_results[${index}][weight]" step="0.1" class="w-1/2 p-1 border rounded text-sm focus:ring-blue-500" placeholder="kg">
+                                    <input type="number" name="workout_results[${index}][reps]" class="w-1/2 p-1 border rounded text-sm focus:ring-blue-500" placeholder="회">
                                 </div>
                             </div>`;
                         container.insertAdjacentHTML('beforeend', html);
