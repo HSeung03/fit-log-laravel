@@ -35,7 +35,7 @@
              class="hidden">
         </div>
 
-        @include('workouts.partials.log-modal')
+        @include('workouts.log-modal')
 
     @else
         {{-- [게스트 상태] 중앙 집중형 히어로 영역 --}}
