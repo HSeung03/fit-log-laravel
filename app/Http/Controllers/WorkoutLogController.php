@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers;
+//이 파일이 위치한 경로를 알려줌
+namespace App\Http\Controllers; 
 
 use App\Models\User;
 use App\Models\WorkoutLog;
@@ -9,18 +10,22 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkoutLogController extends Controller
 {
-    /**
-     * 메인 페이지 (달력)
-     */
+    //로그인 안 한 사람은 welcome 페이지(소개화면)으로 보냄
     public function index() {
         if (!Auth::check()) {
             return view('welcome');
         }
-
-        /** @var User $user */
+        //$user변수안에 User변수가 있다는 것을 명시하기 위해서 사용
+        /** @var User $user */ 
+        //로그인한 사용자의 정보를 $user 변수에 담음
+        //Auth의 인증의 줄임말로 현재 인증된 user의 모든 정보를 $user변수에 담음
+        //::이거는 ->과 다르게 객체를 생성하지 않고 바로 실행하겠다는 뜻
         $user = Auth::user();
 
-        // 인텔리센스 에러 방지를 위해 $user->logs 직접 호출 대신 관계 사용
+        // DB 모델 -> FullCalender가 이해할 수 있는 배열로 변환하는 작업
+        //$user->logs() logs(운동기록)에 연결
+        //-get():연결된 운동기록들을 데이터베이스에서 가져옴
+        //->map(...) 가져온 데이터를 다시 가공
         $logs = $user->logs()->get()->map(function($log) {
             return [
                 'id' => $log->id,
@@ -35,16 +40,14 @@ class WorkoutLogController extends Controller
                 ]
             ];
         });
-
+        //모달에서 카테고리 버튼 눌렀을 때 사용
         $exercisesByCategory = $user->exercises->groupBy('category');
-        
+        //뷰는 로직 없이 화면만 담당
         return view('welcome', compact('logs', 'exercisesByCategory'));
     }
-
-    /**
-     * 운동 기록 저장 및 업데이트
-     */
+    //운동 기록 및 저장
     public function store(Request $request) {
+        //유효성 검사 
         $request->validate([
             'record_date' => 'required|date',
             'exercise_ids' => 'required|array',
@@ -52,8 +55,9 @@ class WorkoutLogController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-
+        //배열 선언
         $workoutResults = [];
+        //입력 데이터 구조 변환
         foreach ($request->exercise_ids as $index => $id) {
             $workoutResults[] = [
                 'exercise_id' => $id,
@@ -62,7 +66,7 @@ class WorkoutLogController extends Controller
                 'weight' => $request->weights[$index] ?? 0,
             ];
         }
-
+        //날짜 기준 업데이트 또는 생성
         $user->logs()->updateOrCreate(
             ['record_date' => $request->record_date],
             [
@@ -74,9 +78,8 @@ class WorkoutLogController extends Controller
         return redirect()->route('home')->with('success', '운동 기록이 완료되었습니다!');
     }
 
-    /**
-     * 1️⃣ 운동기록 목록 페이지 (요약): /logs
-     */
+    
+    //운동기록 목록 페이지 (요약): /logs
     public function list() {
         /** @var User $user */
         $user = Auth::user();
