@@ -11,61 +11,84 @@
         </div>
     </div>
 
+    @include('workouts.log-modal')
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            const calendarEl = document.getElementById('calendar');
+            
+            // 캘린더 초기화 및 설정
+            const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                locale: 'ko', // 한국어 설정
+                locale: 'ko',
                 height: 650,
-                selectable: true, // 날짜 선택 가능하게
+                selectable: true,
                 
-                // 날짜를 클릭했을 때 실행되는 함수
+                // 날짜 클릭 시 모달 오픈
                 dateClick: function(info) {
-                    openModal(info.dateStr); // 클릭한 날짜를 팝업에 넘김
+                    openModal(info.dateStr);
                 },
 
-                // (나중에 여기에 저장된 운동 기록을 불러와서 표시할 겁니다)
+                // 저장된 운동 기록 표시용 데이터 (추후 연결)
                 events: [] 
             });
+            
             calendar.render();
         });
 
-        // 팝업 열기 함수
+        /**
+         * 운동 기록 모달 표시
+         */
         function openModal(dateStr) {
-            document.getElementById('workoutModal').classList.remove('hidden');
+            const modal = document.getElementById('workoutModal');
+            if (!modal) return;
+
+            modal.classList.remove('hidden');
             document.getElementById('modalDateTitle').innerText = dateStr + " 운동 기록";
-            document.getElementById('selectedDate').value = dateStr; // 숨겨진 input에 날짜 주입
+            document.getElementById('selectedDate').value = dateStr;
         }
 
-        // 팝업 닫기 함수
+        /**
+         * 운동 기록 모달 닫기
+         */
         function closeModal() {
-            document.getElementById('workoutModal').classList.add('hidden');
+            const modal = document.getElementById('workoutModal');
+            if (modal) modal.classList.add('hidden');
         }
 
-        // 아까 만든 운동 목록 불러오는 함수 (그대로 재사용)
+        /**
+         * 운동 입력 필드 동적 생성 로직
+         */
         function loadExercises() {
             const select = document.getElementById('template-select');
             const container = document.getElementById('exercise-fields');
+            
+            if (!select || !container) return;
+            
             container.innerHTML = ''; 
-
             if (!select.value) return;
-            const exercises = JSON.parse(select.value);
 
-            exercises.forEach((exName, index) => {
-                const html = `
-                    <div class="p-3 bg-gray-50 rounded border">
-                        <p class="font-bold text-sm text-blue-600 mb-2">${exName}</p>
-                        <input type="hidden" name="workout_results[${index}][name]" value="${exName}">
-                        <div class="flex gap-2">
-                            <input type="number" name="workout_results[${index}][weight]" class="w-1/2 p-1 border rounded text-sm" placeholder="kg">
-                            <input type="number" name="workout_results[${index}][reps]" class="w-1/2 p-1 border rounded text-sm" placeholder="회">
+            try {
+                const exercises = JSON.parse(select.value);
+
+                exercises.forEach((exName, index) => {
+                    const html = `
+                        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 mb-2 shadow-sm">
+                            <p class="font-bold text-sm text-blue-600 mb-2">${exName}</p>
+                            <input type="hidden" name="workout_results[${index}][name]" value="${exName}">
+                            <div class="flex gap-2">
+                                <input type="number" name="workout_results[${index}][weight]" 
+                                    class="w-1/2 rounded-md border-gray-300 text-sm focus:ring-blue-500" placeholder="kg">
+                                <input type="number" name="workout_results[${index}][reps]" 
+                                    class="w-1/2 rounded-md border-gray-300 text-sm focus:ring-blue-500" placeholder="회">
+                            </div>
                         </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-            });
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            } catch (error) {
+                console.error("데이터 로드 중 오류가 발생했습니다.", error);
+            }
         }
     </script>
 </x-app-layout>
