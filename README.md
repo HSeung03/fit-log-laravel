@@ -65,4 +65,12 @@
 | **category** | string | 부위별 분류 (상체, 하체, 유산소 등) |
 
 ---
+<img width="1123" height="1257" alt="image" src="https://github.com/user-attachments/assets/f7c7b1d1-494b-41a7-b446-47359ac9adc9" />
+<img width="1141" height="1261" alt="image" src="https://github.com/user-attachments/assets/5326e142-d3d8-4e4e-b51d-cd1f2a737f5e" />
+<img width="1142" height="1273" alt="image" src="https://github.com/user-attachments/assets/b2bf986f-63e3-402d-8ff0-5122c5090a6a" />
+<img width="1143" height="1274" alt="image" src="https://github.com/user-attachments/assets/edf9734a-3040-4a7a-a246-2b164898e4ab" />
+<img width="1142" height="1228" alt="image" src="https://github.com/user-attachments/assets/7c6d98b1-61c4-42ee-bf1d-8ffde77e06c4" />
+<img width="1142" height="994" alt="image" src="https://github.com/user-attachments/assets/34b0b206-e15a-4cb9-a831-bed77b2cdff7" />
+<img width="1142" height="1007" alt="image" src="https://github.com/user-attachments/assets/279b6216-f3ed-43c5-812d-6ed6b2c9b274" />
+
 
