@@ -1,38 +1,68 @@
-# 🍎 HealthLog: 운동 기록 & 영양 관리 시스템
+# 🏋️‍♂️ My Workout Tracker (운동 기록 관리 서비스)
 
-> 사용자가 자신의 식단과 운동량을 기록하고, 영양 성분을 체계적으로 모니터링할 수 있는 웹 애플리케이션입니다.
+사용자의 체성분 변화를 추적하고, 자신만의 운동 루틴과 매일의 기록을 관리하는 개인 맞춤형 헬스 케어 서비스입니다.
 
----
-
-## 🛠 Tech Stack
-- **Framework:** Laravel 10 (PHP 8.2)
-- **Database:** MySQL
-- **Tooling:** Eloquent ORM, Tinker, Seeder
-
-## ✨ 주요 기능 (Key Functionalities)
-
-### 1. 효율적인 식단 데이터 조회
-- **Eloquent Query Builder**를 사용하여 수천 개의 음식 데이터 중 필요한 정보를 실시간으로 필터링합니다.
-- `whereRaw` 등을 사용하여 복잡한 영양 성분 계산 조건을 처리했습니다.
-
-### 2. 체계적인 음식 카테고리화
-- **One-to-Many Relationship**을 통해 음식 종류(FoodType)를 구분하여 사용자가 식단을 직관적으로 관리할 수 있게 설계했습니다.
-- 유연한 데이터 관리를 위해 숫자가 아닌 문자열 기반의 고유 식별자(PK)를 사용했습니다.
-
-### 3. 데이터 일관성 및 자동화
-- **Factory & Seeder**를 활용하여 테스트 환경에서도 실제와 유사한 데이터를 즉시 구축할 수 있도록 자동화했습니다.
-- **Soft Deletes** 기능을 적용하여 사용자 실수로 인한 데이터 삭제를 방지하고 복구가 가능하도록 구현했습니다.
-
-## 🧠 기술적 고민 (Technical Challenges)
-
-### "성능과 가독성 사이의 균형"
-- 단순 SQL 대신 **Eloquent ORM**을 선택하여 코드의 가독성을 높이고 유지보수를 쉽게 만들었습니다.
-- 특히 **Mass Assignment(updateOrCreate)**를 활용하여 중복 데이터를 방지하고 코드의 길이를 60% 이상 단축한 경험이 있습니다.
+## 🛠 Tech Stack (사용 기술)
+* **Framework**: Laravel 12.44.0
+* **Language**: PHP 8.3.6
+* **Database**: MySQL
+* **Frontend**: Blade Template, FullCalendar API, Tailwind CSS
 
 ---
 
-## 💻 실행 방법 (Installation)
-1. `composer install`
-2. `cp .env.example .env`
-3. `php artisan migrate --seed`
-4. `php artisan serve`
+## 🚀 Key Features (주요 기능)
+
+### 1. 사용자 신체 스펙 관리 (User Specs)
+* **기초 데이터 저장**: 키(Height), 초기 체중, 근육량, 체지방량을 저장하여 변화의 기준점을 잡습니다.
+* **기능 확장**: 기존 사용자(`users`) 테이블에 마이그레이션을 통해 유연하게 필드를 추가했습니다.
+
+### 2. 운동 루틴 템플릿 (Workout Templates)
+* **맞춤형 루틴**: '월요일 하체 루틴'과 같이 자주 사용하는 운동 구성을 템플릿으로 저장합니다.
+* **JSON 데이터 활용**: 루틴 내용을 JSON 형태로 저장하여 복잡한 운동 목록도 효율적으로 관리합니다.
+
+### 3. 일일 운동 및 식단 기록 (Daily Logs)
+* **달력 연동**: 기록된 날짜(`record_date`)를 바탕으로 달력에 활동이 표시됩니다.
+* **종합 기록**: 당일 체중, 상세 운동 결과(무게, 횟수 등), 식단 내용을 한 번에 기록합니다.
+
+### 4. 나만의 운동 종목 (Exercises)
+* **커스텀 종목**: 사용자가 직접 운동 이름과 카테고리(상체, 하체, 유산소 등)를 등록하여 관리합니다.
+
+---
+
+## 📑 Database Structure (상세 설계)
+
+마이그레이션 파일을 기반으로 설계된 데이터베이스 구조입니다. 모든 테이블은 사용자가 탈퇴할 때 관련 기록이 함께 삭제되도록 `onDelete('cascade')` 설정이 적용되어 있습니다.
+
+### 1. users (기존 테이블 확장)
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| **height** | float | 사용자의 키 |
+| **initial_weight** | float | 처음 측정한 체중 |
+| **initial_muscle** | float | 처음 측정한 근육량 |
+| **initial_fat** | float | 처음 측정한 체지방량 |
+
+### 2. workout_templates (운동 루틴)
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| **user_id** | foreignId | 생성한 사용자 고유 번호 |
+| **template_name** | string | 루틴의 이름 (예: 월요일 하체 루틴) |
+| **routine_contents** | json | 루틴에 포함된 운동 목록 데이터 |
+
+### 3. workout_logs (일일 기록)
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| **user_id** | foreignId | 기록 작성자 고유 번호 |
+| **record_date** | date | 운동을 기록한 날짜 |
+| **current_weight** | decimal | 기록 당일의 체중 |
+| **workout_results** | json | 운동별 상세 수치 (세트, 무게, 횟수) |
+| **diet_content** | text | 식단 및 메모 기록 |
+
+### 4. exercises (운동 종목)
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| **user_id** | foreignId | 등록한 사용자 고유 번호 |
+| **name** | string | 운동 명칭 (예: 벤치프레스) |
+| **category** | string | 부위별 분류 (상체, 하체, 유산소 등) |
+
+---
+
