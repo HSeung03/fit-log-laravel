@@ -65,6 +65,9 @@
 | **category** | string | 부위별 분류 (상체, 하체, 유산소 등) |
 
 ---
+<img width="640" height="375" alt="image" src="https://github.com/user-attachments/assets/f62ae4e5-72b5-4206-8b49-9017a9710f7f" />
+<img width="691" height="664" alt="image" src="https://github.com/user-attachments/assets/4589aec5-2c57-4449-b070-b1e50128e78d" />
+
 <img width="1123" height="1257" alt="image" src="https://github.com/user-attachments/assets/f7c7b1d1-494b-41a7-b446-47359ac9adc9" />
 메인페이지
 <img width="1144" height="1247" alt="image" src="https://github.com/user-attachments/assets/1f8c920e-b1d2-4163-9e8a-dfb614951a22" />
