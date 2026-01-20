@@ -66,11 +66,19 @@
 
 ---
 <img width="1123" height="1257" alt="image" src="https://github.com/user-attachments/assets/f7c7b1d1-494b-41a7-b446-47359ac9adc9" />
+메인페이지
+<img width="1144" height="1247" alt="image" src="https://github.com/user-attachments/assets/1f8c920e-b1d2-4163-9e8a-dfb614951a22" />
+회원가입
 <img width="1141" height="1261" alt="image" src="https://github.com/user-attachments/assets/5326e142-d3d8-4e4e-b51d-cd1f2a737f5e" />
+로그인
 <img width="1142" height="1273" alt="image" src="https://github.com/user-attachments/assets/b2bf986f-63e3-402d-8ff0-5122c5090a6a" />
+대쉬보드
 <img width="1143" height="1274" alt="image" src="https://github.com/user-attachments/assets/edf9734a-3040-4a7a-a246-2b164898e4ab" />
+운동기록
 <img width="1142" height="1228" alt="image" src="https://github.com/user-attachments/assets/7c6d98b1-61c4-42ee-bf1d-8ffde77e06c4" />
+기록확인
 <img width="1142" height="994" alt="image" src="https://github.com/user-attachments/assets/34b0b206-e15a-4cb9-a831-bed77b2cdff7" />
+상세확인
 <img width="1142" height="1007" alt="image" src="https://github.com/user-attachments/assets/279b6216-f3ed-43c5-812d-6ed6b2c9b274" />
-
+운동추가
 
